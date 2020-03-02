@@ -53,11 +53,11 @@ class PiBarApp(App):
        
         Window.fullscreen = 'auto'
         Window.show_cursor = False
-        sm = BarScreenManager(transition = SlideTransition())
+        sm = BarScreenManager(transition = SlideTransition(), Theme = AppTheme[0])
         sm.Theme = AppTheme[0]
-        sm.add_widget(HelloScreen(name='Welcome'))
-        sm.add_widget(SelectionScreen(name='DrinkList'))
-        sm.add_widget(AdminScreen(name='Admin'))
+        sm.add_widget(HelloScreen(AppTheme[0],name='Welcome'))
+        sm.add_widget(SelectionScreen(AppTheme[0],name='DrinkList'))
+        sm.add_widget(AdminScreen(AppTheme[0], name='Admin'))
         sm.add_widget(BlackScreen(name='black'))
         sm.current='Welcome'
         

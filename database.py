@@ -26,11 +26,9 @@ class DbEngine:
     
     
     def getUserId(self,cardid):
-        #time.sleep(0.1)
-        #GPIO.output(15, #GPIO.LOW)
+        
         self.cursor.execute('SELECT * FROM customers where tagid = {}'.format(cardid))
         if not self.cursor.rowcount:
-            #GPIO.output(18, #GPIO.HIGH)
             print('User fuer RFID {} unbekannt'.format(cardid))
             result = []  #customer not found for CardID
         else:
@@ -93,6 +91,18 @@ class DbEngine:
         
         
         cursor.close()
+        
+    def add_RFID(self,customer):
+        cursor = self.db.cursor()
+        result = cursor.execute('INSERT INTO customers (tagid,lastName,userCard) VALUES({},{},{})'.format( customer," 'Frei' "," 'Chip xx'"))
+        if result !=1: # we have an error
+            self.parent.dispatch('on_result','Error', 'Konnte RFID nicht einfügen!\n RFID schon vorhanden?')
+        else:
+            self.db.commit()  #write updates to database
+            cursor.execute('select id from customers where tagid= {}'.format (customer))
+            result= cursor.fetchall()
+            index= result[0]
+            self.parent.dispatch('on_result','Erfolg', 'RFID {} als Karte Nummer\n {} eingefügt'.format(customer,index[0]))
         
     def on_result(*args):
         pass
