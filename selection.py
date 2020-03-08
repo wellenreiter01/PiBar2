@@ -45,7 +45,7 @@ class DrinkButton(Button):
         self.halign = 'center'
         self.background_normal = '{}_normal.png'.format(backgroundImage)
         self.background_down = '{}_pressed.png'.format(backgroundImage)
-        self.background_color = [.6,.5,.9,.8] 
+        self.background_color = [.2,.1,1,.8] 
         self.text_size = (150,None)
         self.shorten_from = 'right'
         
@@ -55,7 +55,7 @@ class DrinkButton(Button):
     def callback(self,instance): 
         #Trigger selection_widget to update database
         self.parent.parent.parent.dispatch('on_drink_selected',instance.price, instance.ean, instance.UserId,self.parent.isCredit) 
-        print   ('on_drink_selected',instance.price, instance.ean, instance.UserId,self.parent.isCredit)
+        
         
 
         
@@ -84,7 +84,7 @@ class Selection(GridLayout):
         self.CardId = CardId
         self.UserGroup = 0
         
-    def get_product_list(self):
+    def get_product_list(self, Theme):
         #get Productlist based the user's group
         self.UserId,self.UserGroup, self.isCredit = self.engine.getUserInfo(self.CardId)
         if self.UserId:
@@ -107,7 +107,7 @@ class Selection(GridLayout):
             j= 0
             for Product in dbResult:
     
-                Productlist = self.Buttons.append(DrinkButton(Product[2],Product[1],self.UserId,Product[3],'Themes/default/Button1'))
+                Productlist = self.Buttons.append(DrinkButton(Product[2],Product[1],self.UserId,Product[3],'Themes/{}/Button1'.format(Theme)))
                 self.add_widget(self.Buttons[j])
                 self.Buttons[j].bind(on_release=self.Buttons[j].callback)
                 self.add_widget( Label(text='{:.2f}'.format(Product[3])+' €',
@@ -144,24 +144,23 @@ class SelectionScreen(Screen):
     
         
         
-    def __init__(self, **kwargs):
+    def __init__(self, Theme, **kwargs):
+        self.Theme= Theme
         self.register_event_type('on_set_CardId')
         self.register_event_type('on_drink_selected')
         self.register_event_type('on_result')
         super(SelectionScreen, self).__init__(**kwargs)
+        
         self.tableLayout = BoxLayout(orientation= 'vertical')  
-        
-       
-        #self.tableLayout.add_widget(self.selection)
-
-        self.add_widget(Image(source="Themes/default/Background.jpg",size_hint = (1,1)),
-                        index=1
-                        ) 
-        
         self.add_widget(self.tableLayout)
         
+        self.add_widget(Image(source='Themes/{}/Background.jpg'.format(self.Theme),
+                        size_hint = (1,1),opacity=.5),
+                        index=1
+                        ) 
        
     def on_enter(self):
+       
         self.timeout = Clock.create_trigger(self.no_input,10)
         self.timeout()
         
@@ -174,8 +173,7 @@ class SelectionScreen(Screen):
         self.tableLayout.clear_widgets()
         # the card is known, so show list of productss allowed
         self.selection = Selection(self.CardId,self)
-        #self.selection.parent = self
-        self.selection.get_product_list()
+        self.selection.get_product_list(self.Theme)
         self.tableLayout.add_widget( InfoLine(text='Bitte wähle ein Getränk:', 
                         size_hint= (1,0.2),
                         bold = True

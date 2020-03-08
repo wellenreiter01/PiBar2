@@ -8,11 +8,9 @@ from kivy.properties import StringProperty
 from kivy.clock import Clock
 
 import MySQLdb
-import time
-import MFRC522
-import RPi.GPIO as GPIO
 
 from database import DbEngine
+from scanner import Scanner
 
 class BlackScreen(Screen):
     def __init__(self, **kwargs):
@@ -36,10 +34,12 @@ class HelloScreen(Screen):
 #            print (str(user[2]) +" "+str(user [3]))
             
         
-    def __init__(self, **kwargs):
+    def __init__(self,Theme, **kwargs):
        
         super(HelloScreen, self).__init__(**kwargs)
+        self.Theme= Theme
         self.engine= DbEngine(self)
+        self.scanner=Scanner(self)
         self.orientation = 'vertical'
         self.padding = (0.5*self.width,30)
         self.Table.add_widget( Label(text= 'Willkommen', 
@@ -48,8 +48,8 @@ class HelloScreen(Screen):
                                bold=True
                                ))
         self.Table.add_widget( Button(text = '',
-                                      background_normal= 'Themes/default/Background.jpg',
-                                      background_down= 'Themes/Orangejuice/Background.jpg'))
+                                      background_normal= 'Themes/{}/Background.jpg'.format(self.Theme),
+                                      background_down= 'Themes/{}/Background.jpg'.format(self.Theme)))
                                     
         self.Table.add_widget( Label(text = 'Bitte scanne deine Benutzerkarte! ',
                                size_hint= (1,0.1),
@@ -57,24 +57,14 @@ class HelloScreen(Screen):
                                bold=True
                                ))
         self.add_widget(self.Table)
-        self.MIFAREReader = MFRC522.MFRC522()
-        self.init_gpio()
+       # self.MIFAREReader = MFRC522.MFRC522()
+       # self.init_gpio()
         
-    def init_gpio(self):
-        GPIO.setmode(GPIO.BOARD)
-        GPIO.setwarnings(False)
-        GPIO.setup(15, GPIO.OUT)
-        GPIO.output(15, GPIO.HIGH)
-        time.sleep(0.1)
-        GPIO.output(15, GPIO.LOW)
-        # Pins to control LEDs
-        #GPIO.setup(12, GPIO.OUT)
-        #GPIO.setup(16, GPIO.OUT)
-        #GPIO.setup(18, GPIO.OUT)
+    
  
     def on_enter(self):
         self.read = True
-        self.Scan= Clock.schedule_interval(self.scan,.8)
+        self.Scan= Clock.schedule_interval(self.scanner.scan,.8)
         self.Blank= Clock.schedule_interval(self.blank_screen,180)
     
     def on_leave(self):
@@ -83,7 +73,7 @@ class HelloScreen(Screen):
         self.Scan.cancel()
         self.Blank.cancel()
         
-        GPIO.cleanup()
+        #GPIO.cleanup()
         
     def on_CardId(self, *args):
         if self.CardId != '0':
@@ -91,7 +81,7 @@ class HelloScreen(Screen):
                 self.manager.dispatch('on_isAdmin', self.CardId)
             else:
                 self.manager.dispatch('on_set_CardId', self.CardId)
-        
+    '''       
     def scan(self, *args):
         if self.read:
             #GPIO.output(16, GPIO.HIGH)  #set LED on
@@ -109,6 +99,6 @@ class HelloScreen(Screen):
                 #        cursor = db.cursor()
                 #GPIO.output(12, GPIO.LOW) #LED off
                 return True
-
+    '''
     def blank_screen(self, *args):
             self.manager.current='black'
