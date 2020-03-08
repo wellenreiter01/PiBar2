@@ -1,0 +1,58 @@
+body {
+    font-family:"Times New Roman",serif;
+    background-image: url("/images/Background.jpg");
+    background-color: lightblue;
+}
+
+h1 {
+    font:bold 135% Arial,sans-serif; 
+    color:lightgoldenrodyellow; 
+    margin-bottom:0.9em;
+    opacity: 1;
+    
+}
+h2,th {
+       font:bold 100% Arial,sans-serif; 
+       color:darkblue; 
+       margin-top:1.5em;
+       opacity: 1 
+}
+h3 {
+    color:lightgoldenrodyellow; 
+}
+
+table {
+    background-color: lightgrey;
+    border: 1px solid black;
+    border-radius: 12px;
+    margin: 20px;
+}
+th,td {
+    font:bold 100% Arial,sans-serif;
+    border: 1px;
+    border-radius: 6px;
+    padding-right: 5px;
+}
+    
+input {
+     border-radius: 4px;
+}
+
+div {
+    opacity: 0.9;
+}
+div.float-right{
+    float: right;
+    width: 40%;
+}
+
+
+.logo {
+        height: 60px;
+        float: left;
+        position: absolute;
+        z-index:5;
+}
+
+
+

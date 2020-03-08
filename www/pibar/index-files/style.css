@@ -1,0 +1,158 @@
+body {
+    background-color: black;
+    background-image: url('background.jpg');
+    background-size: cover;
+    background-position: 0 50%;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+.inhalt {
+    width: 1000px;
+    background-color: black;
+    
+    
+    margin-left: auto;
+    margin-right: auto;
+    
+    /*padding-top: 5px 10px;*/
+    padding-bottom: 10px;
+    
+    overflow: hidden;
+}
+
+
+.header {
+    background-color: white;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    
+    overflow: hidden;
+}
+
+.header img {
+    float: left;
+}
+
+.ueberschrift-box {
+    float: left;
+    margin-left: 20px;
+}
+
+a, a:visited {
+    margin-right: 15px;
+    color: black;
+}
+
+a:hover {
+    color: gray;
+}
+
+.ueberschrift-header {
+    font-family: 'Oswald', sans-serif;
+    font-size: 32pt;
+}
+
+.menu {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 300;
+    font-size: 18pt;
+}
+
+
+.spalte {
+    /*border: 1px solid green;*/
+    float: left;
+    
+}
+
+
+
+
+.weisser-kasten {
+    background-color: white;
+    
+    width: 465px;
+    
+    margin-top: 10px;
+    margin-left: 10px;
+    
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 15px;
+    padding-top: 5px;
+    
+}
+
+
+
+.kleine-tabelle {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.kleine-tabelle td {
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+        
+    padding: 8px 10px;
+    
+    font-family: Arial, sans-serif;
+    font-size: 16pt;
+}
+
+.tabellen-ueberschrift {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 300;
+    font-size: 24pt;
+    
+    margin-bottom: 0;
+}
+
+.text-mitte {
+    text-align: center;
+}
+
+.anzahl-getraenke {
+    font-family: 'Oswald', sans-serif;
+    font-size: 55pt;
+    margin: 0;
+    padding: 0;
+}
+
+.uhrzeit-letztes-getraenk {
+    font-family: 'Oswald', sans-serif;
+    font-size: 28pt;
+}
+
+
+
+
+
+
+/* FONTS */
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Oswald Light'), local('Oswald-Light'), url(Oswald-Light.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Oswald Regular'), local('Oswald-Regular'), url(Oswald-Regular.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Oswald Bold'), local('Oswald-Bold'), url(Oswald-Bold.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
