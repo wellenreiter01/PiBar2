@@ -45,7 +45,7 @@ class DrinkButton(Button):
         self.halign = 'center'
         self.background_normal = '{}_normal.png'.format(backgroundImage)
         self.background_down = '{}_pressed.png'.format(backgroundImage)
-        self.background_color = [.6,.5,.9,.8] 
+        self.background_color = [.2,.1,1,.8] 
         self.text_size = (150,None)
         self.shorten_from = 'right'
         
@@ -55,7 +55,7 @@ class DrinkButton(Button):
     def callback(self,instance): 
         #Trigger selection_widget to update database
         self.parent.parent.parent.dispatch('on_drink_selected',instance.price, instance.ean, instance.UserId,self.parent.isCredit) 
-        print   ('on_drink_selected',instance.price, instance.ean, instance.UserId,self.parent.isCredit)
+        
         
 
         
@@ -155,7 +155,7 @@ class SelectionScreen(Screen):
         self.add_widget(self.tableLayout)
         
         self.add_widget(Image(source='Themes/{}/Background.jpg'.format(self.Theme),
-                        size_hint = (1,1)),
+                        size_hint = (1,1),opacity=.5),
                         index=1
                         ) 
        

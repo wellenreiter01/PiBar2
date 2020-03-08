@@ -28,6 +28,7 @@ class BarScreenManager(ScreenManager):
         
     def on_isAdmin(self, *args):
         self.current='Admin'
+        self.dispatch_children('on_set_CardId',*args)
         
     def on_drink_selected(self,*args):
        self.dispatch_children('on_drink_selected',*args)

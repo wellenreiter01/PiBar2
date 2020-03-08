@@ -16,15 +16,38 @@ class DbEngine:
             #print('DbEngine:  db.is_connected') 
             self.cursor = self.db.cursor()
         
-    def getProducts(self,UserGroup=0, UserBalance = 0):      
-        self.cursor.execute('SELECT * FROM products where drinktype <= {:d} and stock > 0 and price <= {:f}'.format(UserGroup, UserBalance))
+    def getProducts(self,UserGroup=0, UserBalance = 0, getAll=False):  
+        if getAll:
+            query= 'SELECT ean,name,stock FROM products'
+        else:
+            query='SELECT * FROM products where drinktype <= {:d} and stock > 0 and price <= {:f}'.format(UserGroup, UserBalance)
+        self.cursor.execute(query)
         if self.cursor.rowcount:
             result = self.cursor.fetchall() 
         else:
             result = []
+            print('nothing found')
         return result     
+ 
+    def getFreeChips(self):
+        self.cursor.execute('SELECT Count(id) FROM customers WHERE userCard like "CREDIT%" ')
+        if not self.cursor.rowcount:
+            self.parent.dispatch('on_result','Info', 'Keine freien Chips gefunden gefunden')
+            result = []  #customer not found for CardID
+        else:
+            result = self.cursor.fetchall() 
+        return result   
     
     
+    def getUserList(self):
+        result=self.cursor.execute('SELECT id,lastName,firstName FROM customers WHERE lastName not like "FREI%" ORDER by lastName')
+        if not self.cursor.rowcount:
+            self.parent.dispatch('on_result','Info', 'Keine Benutzer gefunden')
+            result = []  #customer not found for CardID
+        else:
+            result = self.cursor.fetchall() 
+        return result   
+         
     def getUserId(self,cardid):
         
         self.cursor.execute('SELECT * FROM customers where tagid = {}'.format(cardid))
@@ -92,18 +115,21 @@ class DbEngine:
         
         cursor.close()
         
-    def add_RFID(self,customer):
+    def add_RFID(self,cardId):
+        Check=(self.getUserInfo(cardId) == [])
         cursor = self.db.cursor()
-        result = cursor.execute('INSERT INTO customers (tagid,lastName,userCard) VALUES({},{},{})'.format( customer," 'Frei' "," 'Chip xx'"))
-        if result !=1: # we have an error
-            self.parent.dispatch('on_result','Error', 'Konnte RFID nicht einfügen!\n RFID schon vorhanden?')
+        try:
+            result = cursor.execute('INSERT INTO customers (tagid,firstName,lastName,userCard) VALUES({},{},{},{})'.format( cardId," 'Frei' ", " 'Frei' "," 'Chip xx'"))
+        except:
+            print ('Error', self.db.error())
+            self.parent.dispatch('on_result','Error', '{}\n RFID schon vorhanden?'.format (self.db.error()))
         else:
             self.db.commit()  #write updates to database
-            cursor.execute('select id from customers where tagid= {}'.format (customer))
+            cursor.execute('select id from customers where tagid= {}'.format (cardId))
             result= cursor.fetchall()
             index= result[0]
-            self.parent.dispatch('on_result','Erfolg', 'RFID {} als Karte Nummer\n {} eingefügt'.format(customer,index[0]))
-        
+            self.parent.dispatch('on_result','Erfolg', cardId,index[0])
+    
     def on_result(*args):
         pass
     
