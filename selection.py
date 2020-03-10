@@ -93,9 +93,11 @@ class Selection(GridLayout):
             popup = Popup(title = 'Warnung', content=Label(text= 'Benutzer für RFID\n {} \nnicht gefunden'.format(self.CardId), size_hint_x = .9, halign='center'),
             size_hint = (None, None), 
             size=(300, 200))
-              
+            
+            self.timeOut=Clock.schedule_once(self.no_input,2)
             popup.open()
             Close_me= Clock.schedule_once(popup.dismiss,3)
+            
          
         if self.UserGroup:
             if self.isCredit:
@@ -120,13 +122,13 @@ class Selection(GridLayout):
                 self.add_widget(InfoLine(text='Keine passenden Produkte gefunden'))
             
     def on_enter(self):
-        timeOut=Clock.schedule_once(self.no_input,TIMEOUT)
+        self.timeOut=Clock.schedule_once(self.no_input,TIMEOUT)
         
     def on_leave(self):
-        timeOut.cancel()
+        self.timeOut.cancel()
         
     def no_input(self,instance):
-        self.parent.parent.no_input(instance.parent)
+        self.parent.parent.no_input(self)
     
     
     
